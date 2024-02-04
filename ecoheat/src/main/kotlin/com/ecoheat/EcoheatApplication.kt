@@ -8,5 +8,5 @@ class EcoheatApplication
 
 fun main(args: Array<String>) {
 	runApplication<EcoheatApplication>(*args)
-	println("Server running")
+	println("Server started")
 }
