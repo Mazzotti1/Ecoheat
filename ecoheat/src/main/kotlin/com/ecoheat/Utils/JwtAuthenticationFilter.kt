@@ -39,22 +39,15 @@ class JwtAuthenticationFilter(
                     .body
 
                 logger.info("Claims: $claims")
-                val userIdString = claims?.id
-                val userId = userIdString?.toLongOrNull()
-                if (userId != null) {
-                    val user = userService.getUserById(userId)
 
-                    if (user != null) {
-                        val authorities = user.role.name.let { listOf(SimpleGrantedAuthority(it)) } ?: emptyList()
-                        val authentication: Authentication = UsernamePasswordAuthenticationToken(userId, null, authorities)
-                        SecurityContextHolder.getContext().authentication = authentication
-                    } else {
-                        logger.error("UserID is null or not a valid Long. Value: $userIdString")
-                    }
+                val userId = claims?.get("id")?.toString()
+                val roleClaim = claims?.get("role")?.toString()
+                val role = extractRoleFromClaim(roleClaim)
 
-                } else {
-                    logger.error("UserID is null. Type of claims.id: ${claims?.id?.javaClass}")
-                }
+                val authorities = listOf(SimpleGrantedAuthority("ROLE_$role"))
+
+                val authentication: Authentication = UsernamePasswordAuthenticationToken(userId, null, authorities)
+                SecurityContextHolder.getContext().authentication = authentication
 
             } catch (ex: Exception) {
                 logger.error("Erro ao processar token JWT", ex)
@@ -70,5 +63,10 @@ class JwtAuthenticationFilter(
         return if (header != null && header.startsWith(messageSource.getMessage("bearer.prefix", null, locale))) {
             header.substring(7)
         } else null
+    }
+    private fun extractRoleFromClaim(roleClaim: String?): String {
+        val regex = Regex("name=(.*?)(?:,|\\))")
+        val matchResult = regex.find(roleClaim ?: "") ?: throw IllegalArgumentException("Role claim inválida: $roleClaim")
+        return matchResult.groupValues[1]
     }
 }
