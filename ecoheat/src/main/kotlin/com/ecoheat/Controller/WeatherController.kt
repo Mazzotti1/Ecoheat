@@ -28,7 +28,7 @@ class WeatherController(private val messageSource: MessageSource) {
             val responseFromApi = weatherService.getApiResponse()
             return ResponseEntity(responseFromApi, HttpStatus.ACCEPTED)
         } catch (ex: RegistroIncorretoException) {
-            val errorMessage = ex.message ?: "Ocorreu um erro durante a criação do usuário."
+            val errorMessage = messageSource.getMessage("weather.error.request", null, locale)
             return ResponseEntity(errorMessage, HttpStatus.BAD_REQUEST)
         }
 
