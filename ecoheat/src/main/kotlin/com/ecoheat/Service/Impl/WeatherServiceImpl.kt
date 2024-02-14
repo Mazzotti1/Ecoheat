@@ -3,7 +3,7 @@ package com.ecoheat.Service.Impl
 import com.ecoheat.Exception.RegistroIncorretoException
 
 import com.ecoheat.Service.IWeatherService
-import com.ecoheat.WeatherApi.WeatherApi
+import com.ecoheat.Apis.WeatherApi.WeatherApi
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.MessageSource
 import org.springframework.stereotype.Service
@@ -17,7 +17,7 @@ class WeatherServiceImpl @Autowired constructor(private val messageSource: Messa
     private lateinit var future: CompletableFuture<Any>
     override fun getWeatherProps(q: String?, days: Int?, hour: Int?, lang: String?) {
         try {
-            val weatherApi = WeatherApi()
+            val weatherApi = WeatherApi(null)
             future = CompletableFuture()
             weatherApi.getWeatherJson(q, days, hour, lang, this)
         } catch (ex: RegistroIncorretoException) {

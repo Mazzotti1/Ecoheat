@@ -25,5 +25,14 @@ data class Events (
     val eventLocation: Point,
 
     @Column(nullable = false)
-    val maxCapacity: Int
-)
+    val maxCapacity: Int,
+
+    @ManyToOne
+    @JoinColumn(name = "fk_eventcategories")
+    val eventCategorie: EventCategories,
+
+){
+    companion object {
+        const val DEFAULT_EVENT_CATEGORIE_ID: Long = 8
+    }
+}

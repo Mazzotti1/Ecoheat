@@ -1,13 +1,16 @@
-package com.ecoheat.WeatherApi
+package com.ecoheat.Apis.WeatherApi
 import com.ecoheat.Service.IWeatherService
 import io.github.cdimascio.dotenv.dotenv
 import okhttp3.*
+import org.springframework.context.MessageSource
 import java.io.IOException
+import java.util.*
 
 
-class WeatherApi {
+class WeatherApi(private val messageSource: MessageSource?) {
     fun getWeatherJson(q: String?, days: Int?, hour: Int?, lang: String?, callback: IWeatherService) {
 
+        val locale = Locale("pt")
         val dotenv = dotenv()
         val apiKey = dotenv["WEATHER_API_KEY"]!!
         val client = OkHttpClient()
@@ -20,7 +23,6 @@ class WeatherApi {
 
         client.newCall(request).enqueue(object : Callback {
             override fun onFailure(call: Call, e: IOException) {
-                println("Failed to execute request: ${e.message}")
             }
 
             override fun onResponse(call: Call, response: Response) {
@@ -28,7 +30,7 @@ class WeatherApi {
                 if (response.isSuccessful && responseBody != null) {
                     callback.onWeatherResponse(responseBody)
                 } else {
-                    callback.onWeatherFailure("Failed to get weather data")
+                    callback.onWeatherFailure(messageSource!!.getMessage("weather.error.request", null, locale))
                 }
             }
         })

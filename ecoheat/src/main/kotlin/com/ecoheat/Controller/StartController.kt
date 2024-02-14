@@ -24,7 +24,7 @@ class StartController(private val messageSource: MessageSource) {
             val message = startService!!.getStartMessage(requestedMessage)
             return message
         } catch (ex: RegistroIncorretoException) {
-            val errorMessage = ex.message ?: "Ocorreu um erro durante a criação do usuário."
+            val errorMessage = messageSource.getMessage("generic.service.error", null, locale)
             return ResponseEntity(errorMessage, HttpStatus.BAD_REQUEST)
         }
 
