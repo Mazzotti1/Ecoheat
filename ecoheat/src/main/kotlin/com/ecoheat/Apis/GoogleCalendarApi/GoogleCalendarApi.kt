@@ -1,24 +1,65 @@
 package com.ecoheat.Apis.GoogleCalendarApi
+import com.ecoheat.Service.IGoogleCalendarService
+import com.google.gson.Gson
 import io.github.cdimascio.dotenv.dotenv
 import okhttp3.*
 import org.springframework.context.MessageSource
 import java.io.IOException
+import java.text.SimpleDateFormat
 import java.util.*
-class GoogleCalendarApi {
-    val httpClient = OkHttpClient()
+class GoogleCalendarApi(private val messageSource: MessageSource?) {
+    val client = OkHttpClient()
+    private val gson = Gson()
 
-    // ID de um calendário público do Google que contém eventos de feriados brasileiros
-    val publicCalendarId = "pt-br.brazilian#holiday@group.v.calendar.google.com"
+    fun getEventsJson(localRequest: String?, callback: IGoogleCalendarService) {
+        val locale = Locale("pt")
+        val dotenv = dotenv()
+        val apiKey = dotenv["GOOGLE_API_KEY"]!!
+        val client = OkHttpClient()
 
-    // URL para listar os eventos do calendário público
-    val url = "https://www.googleapis.com/calendar/v3/calendars/$publicCalendarId/events"
+        val publicCalendarId = "$localRequest%23holiday@group.v.calendar.google.com"
+        val url = "https://www.googleapis.com/calendar/v3/calendars/$publicCalendarId/events?key=$apiKey"
 
-    // Fazendo uma solicitação GET para obter os eventos do calendário público
-    val request = Request.Builder()
-        .url(url)
-        .build()
+        val request = Request.Builder()
+            .url(url)
+            .build()
 
-    val response = httpClient.newCall(request).execute()
+        client.newCall(request).enqueue(object : Callback {
+            override fun onFailure(call: Call, e: IOException) {
+            }
 
+            override fun onResponse(call: Call, response: Response) {
+                val responseBody = response.body?.string()
+                if (response.isSuccessful && responseBody != null) {
+                    val calendarResponse = gson.fromJson(responseBody, CalendarResponse::class.java)
 
+                    val currentDate = Calendar.getInstance().time
+                    val nextThreeEvents = calendarResponse.items
+                        .filter { it.start.date?.toDate()?.after(currentDate) ?: false }
+                        .sortedBy { it.start.date?.toDate() }
+                        .take(3)
+                        .map { Pair(it.summary, it.start.date) }
+
+                    callback.onGoogleCalendarResponse(nextThreeEvents)
+                } else {
+                    callback.onGoogleCalendarFailure(messageSource!!.getMessage("weather.error.request", null, locale))
+                }
+            }
+        })
+    }
+}
+
+data class CalendarResponse(val items: List<Event>)
+
+data class Event(
+    val summary: String,
+    val start: EventDateTime,
+    val end: EventDateTime
+)
+
+data class EventDateTime(
+    val date: String? = null,
+)
+fun String.toDate(): Date {
+    return SimpleDateFormat("yyyy-MM-dd").parse(this)
 }
