@@ -50,12 +50,12 @@ class GoogleCalendarApi(private val messageSource: MessageSource?) {
 }
 
 data class CalendarResponse(val items: List<Event>)
-
 data class Event(
     val summary: String,
     val start: EventDateTime,
     val end: EventDateTime
 )
+
 
 data class EventDateTime(
     val date: String? = null,
