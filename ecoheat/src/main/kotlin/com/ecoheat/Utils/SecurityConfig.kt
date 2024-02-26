@@ -2,6 +2,7 @@ package com.ecoheat.Utils
 
 import com.ecoheat.Exception.CustomAccessDeniedHandler
 import com.ecoheat.Service.Impl.UserServiceImpl
+import io.github.cdimascio.dotenv.Dotenv
 import io.github.cdimascio.dotenv.dotenv
 import org.springframework.context.MessageSource
 import org.springframework.context.annotation.Bean
@@ -28,6 +29,8 @@ class SecurityConfig{
     val routeD = dotenv["ROUTE_D"]!!
     val routeE = dotenv["ROUTE_E"]!!
     val routeF = dotenv["ROUTE_F"]!!
+    val routeG = dotenv["ROUTE_F"]!!
+    val routeH = dotenv["ROUTE_H"]!!
     @Bean
     fun encoder(): PasswordEncoder? {
         return BCryptPasswordEncoder()
@@ -48,6 +51,8 @@ class SecurityConfig{
                 authorize(routeD, hasRole("USER"))
                 authorize(routeE, hasRole("USER"))
                 authorize(routeF, hasRole("USER"))
+                authorize(routeG, hasRole("USER"))
+                authorize(routeH, hasRole("USER"))
             }
             cors {  }
             headers { frameOptions { disable() } }
