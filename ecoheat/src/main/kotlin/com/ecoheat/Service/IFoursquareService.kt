@@ -9,4 +9,6 @@ interface IFoursquareService {
 
     fun getSpecificPlace (id: String)
     fun onSpecificPlaceResponse(responseBody: String)
+
+    fun getPlacesByName(lat: String,long: String,name: String)
 }

@@ -39,6 +39,17 @@ class FoursquareServiceImpl @Autowired constructor(private val messageSource: Me
             onPlacesFailure(errorMessage)
         }
     }
+
+    override fun getPlacesByName(lat: String, long: String, name: String) {
+        try {
+            val foursquareApi = FoursquareApi(null)
+            future = CompletableFuture()
+            foursquareApi.getPlaceByName(lat,long,name,this)
+        }catch(ex: RegistroIncorretoException){
+            val errorMessage = messageSource.getMessage("generic.service.error", null, locale)
+            onPlacesFailure(errorMessage)
+        }
+    }
     override fun onPlacesResponse(response: List<FoursquarePlace>){
         responseFromApi = response
         future.complete(response)
