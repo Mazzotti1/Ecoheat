@@ -51,4 +51,21 @@ class FoursquareController (private val messageSource: MessageSource) {
             return ResponseEntity(errorMessage, HttpStatus.BAD_REQUEST)
         }
     }
+
+    @GetMapping("/byName")
+    fun getPlaceByName(
+        @RequestParam lat: String,
+        @RequestParam long: String,
+        @RequestParam name: String
+    ): ResponseEntity<Any>{
+        try {
+            foursquareService!!.getPlacesByName(lat,long,name)
+            val responseFromApi = foursquareService.getSpecificApiResponse()
+            return ResponseEntity(responseFromApi, HttpStatus.ACCEPTED)
+        }catch (ex: RegistroIncorretoException){
+            val errorMessage = messageSource.getMessage("place.error.request", null, locale)
+            return ResponseEntity(errorMessage, HttpStatus.BAD_REQUEST)
+        }
+
+    }
 }

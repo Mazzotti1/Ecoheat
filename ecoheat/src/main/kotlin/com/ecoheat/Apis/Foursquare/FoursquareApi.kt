@@ -71,6 +71,32 @@ class FoursquareApi (private val messageSource: MessageSource?) {
             }
         })
     }
+
+    fun getPlaceByName (lat: String, long:String, name: String ,callback: IFoursquareService){
+        //para cada espaço usa %20
+        val url = "https://api.foursquare.com/v3/places/match?name=${name}&ll=${lat}%2C${long}"
+
+        val request = Request.Builder()
+            .url(url)
+            .get()
+            .addHeader("accept", "application/json")
+            .addHeader("Authorization", apiKey)
+            .build()
+
+        client.newCall(request).enqueue(object : Callback {
+            override fun onFailure(call: Call, e: IOException) {
+            }
+
+            override fun onResponse(call: Call, response: Response) {
+                val responseBody = response.body?.string()
+                if (response.isSuccessful && responseBody != null) {
+                    callback.onSpecificPlaceResponse(responseBody)
+                } else {
+                    callback.onPlacesFailure(messageSource!!.getMessage("place.error.request", null, locale))
+                }
+            }
+        })
+    }
 }
 
 data class FoursquareResponse(val results: List<FoursquarePlace>)
