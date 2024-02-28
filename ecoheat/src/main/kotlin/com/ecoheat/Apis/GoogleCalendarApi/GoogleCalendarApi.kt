@@ -26,14 +26,11 @@ class GoogleCalendarApi(private val messageSource: MessageSource?) {
 
         client.newCall(request).enqueue(object : Callback {
             override fun onFailure(call: Call, e: IOException) {
-<<<<<<< HEAD
                 val errorCause = e.cause
                 val errorMessage = e.message
 
                 val formattedErrorMessage = "Ocorreu um erro ao chamar API: $errorMessage\nPorquê: $errorCause"
                 callback.onGoogleCalendarFailure(messageSource!!.getMessage(formattedErrorMessage, null, locale))
-=======
->>>>>>> 014cc53474cf5323d692d0b15b3768ad760cd489
             }
 
             override fun onResponse(call: Call, response: Response) {
