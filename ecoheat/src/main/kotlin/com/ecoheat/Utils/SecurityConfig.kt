@@ -1,6 +1,8 @@
 package com.ecoheat.Utils
 
+import com.ecoheat.Exception.CustomAccessDeniedHandler
 import com.ecoheat.Service.Impl.UserServiceImpl
+import io.github.cdimascio.dotenv.Dotenv
 import io.github.cdimascio.dotenv.dotenv
 import org.springframework.context.MessageSource
 import org.springframework.context.annotation.Bean
@@ -12,19 +14,32 @@ import org.springframework.security.config.http.SessionCreationPolicy
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.security.web.SecurityFilterChain
+import org.springframework.security.web.access.AccessDeniedHandler
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter
+import java.util.*
 
 @Configuration
 @EnableWebSecurity
 class SecurityConfig{
-
+    val locale = Locale("pt")
     val dotenv = dotenv()
     val routeA = dotenv["ROUTE_A"]!!
     val routeB = dotenv["ROUTE_B"]!!
     val routeC = dotenv["ROUTE_C"]!!
+    val routeD = dotenv["ROUTE_D"]!!
+    val routeE = dotenv["ROUTE_E"]!!
+    val routeF = dotenv["ROUTE_F"]!!
+    val routeG = dotenv["ROUTE_F"]!!
+    val routeH = dotenv["ROUTE_H"]!!
+    val routeJ = dotenv["ROUTE_J"]!!
     @Bean
     fun encoder(): PasswordEncoder? {
         return BCryptPasswordEncoder()
+    }
+
+    @Bean
+    fun accessDeniedHandler(messageSource: MessageSource): AccessDeniedHandler {
+        return CustomAccessDeniedHandler(messageSource)
     }
 
     @Bean
@@ -34,6 +49,12 @@ class SecurityConfig{
                 authorize(routeA, hasRole("ADMIN"))
                 authorize(routeB, permitAll)
                 authorize(routeC, permitAll)
+                authorize(routeD, hasRole("USER"))
+                authorize(routeE, hasRole("USER"))
+                authorize(routeF, hasRole("USER"))
+                authorize(routeG, hasRole("USER"))
+                authorize(routeH, hasRole("USER"))
+                authorize(routeJ, hasRole("USER"))
             }
             cors {  }
             headers { frameOptions { disable() } }
@@ -43,6 +64,9 @@ class SecurityConfig{
             addFilterBefore<UsernamePasswordAuthenticationFilter>(JwtAuthenticationFilter(JwtToken(messageSource), messageSource,userService))
             formLogin {disable()}
             httpBasic {}
+            exceptionHandling {
+                accessDeniedHandler = accessDeniedHandler(messageSource)
+            }
         }
 
         return http.build()

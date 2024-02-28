@@ -43,6 +43,8 @@ dependencies {
 	annotationProcessor("org.projectlombok:lombok")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 	testImplementation("org.springframework.security:spring-security-test")
+	implementation("com.squareup.okhttp3:okhttp:4.9.3")
+	implementation("com.google.code.gson:gson:2.8.8")
 }
 
 tasks.withType<KotlinCompile> {
