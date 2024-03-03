@@ -1,2 +1,2 @@
 /build
-env
+app/src/.env
