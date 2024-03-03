@@ -68,4 +68,5 @@ dependencies {
     implementation ("com.squareup.retrofit2:retrofit:2.9.0")
     implementation ("com.squareup.retrofit2:converter-gson:2.9.0")
     implementation("io.github.cdimascio:dotenv-kotlin:6.4.1")
+    implementation("com.github.dotenv-org:dotenv-vault-kotlin:0.0.2")
 }

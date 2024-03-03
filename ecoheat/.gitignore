@@ -13,5 +13,4 @@
 .externalNativeBuild
 .cxx
 local.properties
-app/src/main/res/xml/
-app/src/main/res/xml/configs.xml
+env
