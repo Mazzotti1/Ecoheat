@@ -79,7 +79,7 @@ class FoursquareApi (private val messageSource: MessageSource?) {
 
     fun getPlaceByName (lat: String, long:String, name: String ,callback: IFoursquareService){
         //para cada espaço usa %20
-        val url = "https://api.foursquare.com/v3/places/match?name=${name}&ll=${lat}%2C${long}"
+        val url =  "https://api.foursquare.com/v3/places/match?name=${name}&ll=${lat}%2C${long}&fields=fsq_id%2Cname%2Ctimezone%2Cdescription%2Ctel%2Cwebsite%2Csocial_media%2Cverified%2Chours_popular%2Crating%2Cstats%2Cpopularity%2Cprice%2Ctips%2Ctastes%2Cfeatures%2Cstore_id"
 
         val request = Request.Builder()
             .url(url)
@@ -90,14 +90,43 @@ class FoursquareApi (private val messageSource: MessageSource?) {
 
         client.newCall(request).enqueue(object : Callback {
             override fun onFailure(call: Call, e: IOException) {
-<<<<<<< HEAD
                 val errorCause = e.cause
                 val errorMessage = e.message
 
                 val formattedErrorMessage = "Ocorreu um erro ao chamar API: $errorMessage\nPorquê: $errorCause"
                 callback.onPlacesFailure(messageSource!!.getMessage(formattedErrorMessage, null, locale))
-=======
->>>>>>> 014cc53474cf5323d692d0b15b3768ad760cd489
+
+            }
+
+            override fun onResponse(call: Call, response: Response) {
+                val responseBody = response.body?.string()
+                if (response.isSuccessful && responseBody != null) {
+                    callback.onSpecificPlaceResponse(responseBody)
+                } else {
+                    callback.onPlacesFailure(messageSource!!.getMessage("place.error.request", null, locale))
+                }
+            }
+        })
+    }
+
+    fun getPlacesTips (id: String ,callback: IFoursquareService){
+        val url = "https://api.foursquare.com/v3/places/${id}/tips"
+
+        val request = Request.Builder()
+            .url(url)
+            .get()
+            .addHeader("accept", "application/json")
+            .addHeader("Authorization", apiKey)
+            .build()
+
+        client.newCall(request).enqueue(object : Callback {
+            override fun onFailure(call: Call, e: IOException) {
+                val errorCause = e.cause
+                val errorMessage = e.message
+
+                val formattedErrorMessage = "Ocorreu um erro ao chamar API: $errorMessage\nPorquê: $errorCause"
+                callback.onPlacesFailure(messageSource!!.getMessage(formattedErrorMessage, null, locale))
+
             }
 
             override fun onResponse(call: Call, response: Response) {

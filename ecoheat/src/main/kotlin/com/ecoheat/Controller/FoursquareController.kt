@@ -68,4 +68,19 @@ class FoursquareController (private val messageSource: MessageSource) {
         }
 
     }
+
+    @GetMapping("/tips")
+    fun getPlacesTips(
+        @RequestParam id: String
+    ): ResponseEntity<Any>{
+        try {
+            foursquareService!!.getPlacesTips(id)
+            val responseFromApi = foursquareService.getSpecificApiResponse()
+            return ResponseEntity(responseFromApi, HttpStatus.ACCEPTED)
+        }catch (ex: RegistroIncorretoException){
+            val errorMessage = messageSource.getMessage("place.error.request", null, locale)
+            return ResponseEntity(errorMessage, HttpStatus.BAD_REQUEST)
+        }
+
+    }
 }
