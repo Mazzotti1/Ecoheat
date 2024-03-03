@@ -6,7 +6,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 object NetworkClient {
     private val dotenv = dotenv {
-        directory = "/assets"
+        directory = "/app"
         filename = "env"
     }
 
