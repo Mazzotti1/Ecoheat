@@ -13,5 +13,5 @@
 .externalNativeBuild
 .cxx
 local.properties
-/res/xml/
-/res/xml/config.xml
+app/src/main/res/xml/
+app/src/main/res/xml/configs.xml

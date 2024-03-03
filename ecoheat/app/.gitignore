@@ -1,3 +1,3 @@
 /build
-/res/xml/
-/res/xml/config.xml
+src/main/res/xml/
+src/main/res/xml/configs.xml
