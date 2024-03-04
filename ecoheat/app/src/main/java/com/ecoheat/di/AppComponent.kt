@@ -1,4 +1,11 @@
 package com.ecoheat.di
 
-class AppComponent {
+import com.ecoheat.ui.screen.MainActivity
+import dagger.Component
+import javax.inject.Singleton
+
+@Singleton
+@Component(modules = [AppModule::class])
+interface AppComponent {
+    fun inject(activity: MainActivity)
 }
