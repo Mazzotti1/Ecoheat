@@ -3,10 +3,11 @@ package com.ecoheat.data.remote
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import io.github.cdimascio.dotenv.dotenv
 
 object NetworkClient {
     private val dotenv = dotenv {
-        directory = "/app"
+        directory = "/assets"
         filename = "env"
     }
 
