@@ -1,4 +1,5 @@
 <resources>
-    <string name="app_name">EcoHeat</string>
-    <string name="title_activity_register_screen">RegisterScreen</string>
+<string name="app_name">EcoHeat</string>
+<string name="title_activity_register_screen">RegisterScreen</string>
+<string name="start">Start</string>
 </resources>
