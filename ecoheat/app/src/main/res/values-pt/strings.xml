@@ -1,5 +1,18 @@
 <resources>
+    <!--    Main-->
     <string name="app_name">App ambiental</string>
     <string name="title_activity_register_screen">Tela de Registro</string>
     <string name="start">Iniciar</string>
+
+    <!--    Register-->
+    <string name="name_title">Nome</string>
+    <string name="name_placeholder">Digite seu nome</string>
+    <string name="password_title">Senha</string>
+    <string name="repassword_title">Confirmação da senha</string>
+    <string name="password_placeholder">Digite sua senha</string>
+    <string name="rePassword_placeholder">Digite novamente sua senha</string>
+    <string name="btn_register">Registrar</string>
+    <string name="btn_login">Login</string>
+    <string name="has_account">Já tenho uma conta registrada!</string>
+    <string name="hasnt_account">Ainda não tenho uma conta registrada!</string>
 </resources>

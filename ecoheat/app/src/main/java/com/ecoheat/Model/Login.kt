@@ -1,7 +1,6 @@
 package com.ecoheat.Model
 
-data class User (
-    val id: Int,
+data class Login(
     val name: String,
     val password: String
 )

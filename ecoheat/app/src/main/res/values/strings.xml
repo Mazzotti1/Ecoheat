@@ -1,5 +1,18 @@
 <resources>
-<string name="app_name">EcoHeat</string>
-<string name="title_activity_register_screen">RegisterScreen</string>
-<string name="start">Start</string>
+    <!--    Main-->
+    <string name="app_name">EcoHeat</string>
+    <string name="title_activity_register_screen">RegisterScreen</string>
+    <string name="start">Start</string>
+
+    <!--    Register-->
+    <string name="name_title">Name</string>
+    <string name="name_placeholder">Type your name</string>
+    <string name="password_title">Password</string>
+    <string name="repassword_title">Password confirmation</string>
+    <string name="password_placeholder">Type your password</string>
+    <string name="rePassword_placeholder">Type your password again</string>
+    <string name="btn_register">Register</string>
+    <string name="btn_login">Login</string>
+    <string name="has_account">I already have a registered account!</string>
+    <string name="hasnt_account">I don\'t have a registered account!</string>
 </resources>

@@ -6,21 +6,20 @@ import retrofit2.converter.gson.GsonConverterFactory
 import io.github.cdimascio.dotenv.dotenv
 
 object NetworkClient {
-    private val dotenv = dotenv {
-        directory = "/assets"
-        filename = "env"
-    }
 
-    private val baseUrl = dotenv["BASE_URL"]!!
+    private val baseUrl = "http://10.0.2.2:3333"
 
-    fun create(authtoken:String?= ""): ApiService {
+    fun create(authToken: String? = null): ApiService {
 
-
-        val okHttpClient = authtoken?.let { AuthInterceptor(it) }?.let {
-            OkHttpClient.Builder()
-                .addInterceptor(it)
-                .build()
-        }
+        val okHttpClient = OkHttpClient.Builder()
+            .apply {
+                if (!authToken.isNullOrEmpty()) {
+                    addInterceptor(AuthInterceptor().apply {
+                        setToken(authToken)
+                    })
+                }
+            }
+            .build()
 
         val retrofit = Retrofit.Builder()
             .baseUrl(baseUrl)
@@ -30,5 +29,4 @@ object NetworkClient {
 
         return retrofit.create(ApiService::class.java)
     }
-
 }

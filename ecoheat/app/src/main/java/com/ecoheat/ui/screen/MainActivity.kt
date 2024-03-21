@@ -19,12 +19,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.livedata.observeAsState
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -38,6 +32,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.ecoheat.R
+import com.ecoheat.ui.ViewModel.LoginScreenViewModel
 import com.ecoheat.ui.ViewModel.MainActivityViewModel
 import com.ecoheat.ui.ViewModel.RegisterScreenViewModel
 import com.ecoheat.ui.screen.ui.theme.EcoHeatTheme
@@ -50,7 +45,9 @@ class MainActivity : ComponentActivity() {
 
         setContent {
             val viewModel: MainActivityViewModel = viewModel()
+
             val registerViewModel: RegisterScreenViewModel = viewModel()
+            val loginViewModel: LoginScreenViewModel = viewModel()
             val navController = rememberNavController()
 
             viewModel.loadLanguageState(this)
@@ -67,6 +64,9 @@ class MainActivity : ComponentActivity() {
                 }
                 composable("register") {
                     RegisterScreen(registerViewModel, navController, themeMode)
+                }
+                composable("login") {
+                    LoginScreen(loginViewModel, navController, themeMode)
                 }
             }
         }
